@@ -312,10 +312,10 @@ static int start (lua_State *L) {
   lmprof_State *st = LMPROF_GET_STATE_INFO(L);
 
   /* if start has been called before, erase lib */
-  if (st != NULL) {
-//    destroy(L, st, TRUE);
-//    lua_pushstring(L, "calling lmprof start function twice");
-//    lua_error(L);
+  if (st != NULL && st->mem_stack) {
+    destroy(L, st, TRUE);
+    lua_pushstring(L, "calling lmprof start function twice");
+    lua_error(L);
   }
 
   /* create data_structure and set new alloc function */
