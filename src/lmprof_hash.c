@@ -137,13 +137,13 @@ void lmprof_hash_print (lmprof_Hash *h, const char *filename) {
   for (i = 0; i < LMPROF_HASH_SIZE; i++) {
     lmprof_FHash *fh = h[i];
     while (fh != NULL) {
-      fprintf(f, "  [\"%llu%llu\"] = {\n", fh->function, fh->parent);
-      fprintf(f, "    func = \"%llu\",\n", fh->function);
-      fprintf(f, "    parent = \"%llu\",\n", fh->parent);
+      fprintf(f, "  [\"%lu%lu\"] = {\n", fh->function, fh->parent);
+      fprintf(f, "    func = \"%lu\",\n", fh->function);
+      fprintf(f, "    parent = \"%lu\",\n", fh->parent);
       fprintf(f, "    name = [[ %s ]],\n", fh->name);
       fprintf(f, "    calls = %d,\n", fh->count);
-      fprintf(f, "    mem_self = %llu,\n", fh->self_size);
-      fprintf(f, "    mem_cum = %llu,\n", fh->cum_size);
+      fprintf(f, "    mem_self = %lu,\n", fh->self_size);
+      fprintf(f, "    mem_cum = %lu,\n", fh->cum_size);
       fprintf(f, "  },\n");
       fh = fh->next;
     }

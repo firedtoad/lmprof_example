@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <stdint.h>
  
-#define LMPROF_HASH_SIZE 97
+#define LMPROF_HASH_SIZE 1031
 
 typedef struct lmprof_FHash* lmprof_Hash;
 

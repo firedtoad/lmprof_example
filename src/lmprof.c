@@ -368,9 +368,9 @@ static int stop (lua_State *L) {
     strcpy(st->output_filename, s);
   }
 
-  if (lmprof_stack_size(st->mem_stack) != LMPROF_STOP_QUEUE_SIZE) {
-    luaL_error(L, "stop was not called at the same level as start.");
-  }
+//  if (lmprof_stack_size(st->mem_stack) != LMPROF_STOP_QUEUE_SIZE) {
+//    luaL_error(L, "stop was not called at the same level as start.");
+//  }
 
   lmprof_stack_pop(st->mem_stack);  /* pop stop own call */
 
