@@ -19,23 +19,24 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif ()
 
 aux_source_directory("src" LMP_SRC)
+aux_source_directory("3party/cjson" CJSON_SRC)
 aux_source_directory("3party/lpeg/" LPEG_SRC )
 
 
 aux_source_directory("3party/lua52/src" LUA_52_SRC)
-add_executable(lua5.2 ${LUA_52_SRC} ${LPEG_SRC} ${LMP_SRC})
+add_executable(lua5.2 ${LUA_52_SRC} ${LPEG_SRC} ${CJSON_SRC} ${LMP_SRC})
 target_include_directories(lua5.2 PRIVATE 3party/lua52/src)
 target_compile_definitions(lua5.2 PRIVATE  LUA_COMPAT_ALL)
 
 
 aux_source_directory("3party/lua53/src" LUA_53_SRC)
-add_executable(lua5.3 ${LMP_SRC} ${LPEG_SRC} ${LUA_53_SRC})
+add_executable(lua5.3  ${LMP_SRC} ${LPEG_SRC} ${CJSON_SRC} ${LUA_53_SRC})
 target_include_directories(lua5.3 PRIVATE 3party/lua53/src)
 target_compile_definitions(lua5.3 PRIVATE  LUA_COMPAT_5_2)
 
 
 aux_source_directory("3party/lua54/src" LUA_54_SRC)
-add_executable(lua5.4 ${LUA_54_SRC} ${LPEG_SRC} ${LMP_SRC})
+add_executable(lua5.4 ${LUA_54_SRC} ${LPEG_SRC} ${CJSON_SRC} ${LMP_SRC})
 target_include_directories(lua5.4 PRIVATE 3party/lua54/src)
 target_compile_definitions(lua5.4 PRIVATE  LUA_COMPAT_5_3)
 

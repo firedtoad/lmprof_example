@@ -546,9 +546,7 @@ static int handle_luainit (lua_State *L) {
     return dostring(L, init, name);
 }
 
-LUALIB_API int luaopen_lmprof (lua_State *L);
-LUALIB_API int luaopen_lpeg (lua_State *L);
-
+LUALIB_API void init(lua_State *L);
 /*
 ** Main body of stand-alone interpreter (to be called in protected mode).
 ** Reads the options and handles them all.
@@ -571,8 +569,7 @@ static int pmain (lua_State *L) {
     lua_setfield(L, LUA_REGISTRYINDEX, "LUA_NOENV");
   }
   luaL_openlibs(L);  /* open standard libraries */
-  luaL_requiref(L,"lmprof",luaopen_lmprof,1);
-  luaL_requiref(L,"lpeg",luaopen_lpeg,1);
+  init(L);
   createargtable(L, argv, argc, script);  /* create table 'arg' */
   if (!(args & has_E)) {  /* no option '-E'? */
     if (handle_luainit(L) != LUA_OK)  /* run LUA_INIT */
