@@ -600,6 +600,7 @@ static void doREPL (lua_State *L) {
 /* }================================================================== */
 
 LUALIB_API int luaopen_lmprof (lua_State *L);
+LUALIB_API int luaopen_lpeg (lua_State *L);
 
 /*
 ** Main body of stand-alone interpreter (to be called in protected mode).
@@ -624,6 +625,7 @@ static int pmain (lua_State *L) {
   }
   luaL_openlibs(L);  /* open standard libraries */
   luaL_requiref(L,"lmprof",luaopen_lmprof,1);
+  luaL_requiref(L,"lpeg",luaopen_lpeg,1);
   createargtable(L, argv, argc, script);  /* create table 'arg' */
   lua_gc(L, LUA_GCGEN, 0, 0);  /* GC in generational mode */
   if (!(args & has_E)) {  /* no option '-E'? */

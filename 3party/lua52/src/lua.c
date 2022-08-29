@@ -435,6 +435,7 @@ static int handle_luainit (lua_State *L) {
 }
 
 LUALIB_API int luaopen_lmprof (lua_State *L);
+LUALIB_API int luaopen_lpeg (lua_State *L);
 
 static int pmain (lua_State *L) {
   int argc = (int)lua_tointeger(L, 1);
@@ -458,6 +459,7 @@ static int pmain (lua_State *L) {
   lua_gc(L, LUA_GCSTOP, 0);  /* stop collector during initialization */
   luaL_openlibs(L);  /* open libraries */
   luaL_requiref(L,"lmprof",luaopen_lmprof,1);
+  luaL_requiref(L,"lpeg",luaopen_lpeg,1);
   lua_gc(L, LUA_GCRESTART, 0);
   if (!args[has_E] && handle_luainit(L) != LUA_OK)
     return 0;  /* error running LUA_INIT */
