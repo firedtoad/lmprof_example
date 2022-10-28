@@ -12,16 +12,13 @@
 
 ##### Build defaults #####
 LUA_VERSION =       5.3
-TARGET =            cjson.so
+TARGET =            ../../xsdk/libcjson.a
 PREFIX =            /usr/local
 #CFLAGS =            -g -Wall -pedantic -fno-inline
-CFLAGS =            -O3 -Wall -pedantic -DNDEBUG
+CFLAGS =            -O3 -Wall -pedantic -DNDEBUG -g -fno-omit-frame-pointer
 CJSON_CFLAGS =      -fpic
-CJSON_LDFLAGS =     -shared
-LUA_INCLUDE_DIR =   $(PREFIX)/include
-LUA_CMODULE_DIR =   $(PREFIX)/lib/lua/$(LUA_VERSION)
-LUA_MODULE_DIR =    $(PREFIX)/share/lua/$(LUA_VERSION)
-LUA_BIN_DIR =       $(PREFIX)/bin
+# CJSON_LDFLAGS =     -shared
+LUA_INCLUDE_DIR ?=   ../lua
 
 ##### Platform overrides #####
 ##
@@ -82,39 +79,24 @@ ASCIIDOC =          asciidoc
 BUILD_CFLAGS =      -I$(LUA_INCLUDE_DIR) $(CJSON_CFLAGS)
 OBJS =              lua_cjson.o strbuf.o $(FPCONV_OBJS)
 
-.PHONY: all clean install install-extra doc
+.PHONY: all clean distclean install install-extra doc
 
-.SUFFIXES: .html .adoc
+.SUFFIXES: .html .txt
 
 .c.o:
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) $(BUILD_CFLAGS) -o $@ $<
 
-.adoc.html:
+.txt.html:
 	$(ASCIIDOC) -n -a toc $<
 
 all: $(TARGET)
 
-doc: manual.html performance.html
-
 $(TARGET): $(OBJS)
-	$(CC) $(LDFLAGS) $(CJSON_LDFLAGS) -o $@ $(OBJS)
+	$(AR) rcs $@ $(OBJS)
 
-install: $(TARGET)
-	mkdir -p $(DESTDIR)/$(LUA_CMODULE_DIR)
-	cp $(TARGET) $(DESTDIR)/$(LUA_CMODULE_DIR)
-	chmod $(EXECPERM) $(DESTDIR)/$(LUA_CMODULE_DIR)/$(TARGET)
-
-install-extra:
-	mkdir -p $(DESTDIR)/$(LUA_MODULE_DIR)/cjson/tests \
-		$(DESTDIR)/$(LUA_BIN_DIR)
-	cp lua/cjson/util.lua $(DESTDIR)/$(LUA_MODULE_DIR)/cjson
-	chmod $(DATAPERM) $(DESTDIR)/$(LUA_MODULE_DIR)/cjson/util.lua
-	cp lua/lua2json.lua $(DESTDIR)/$(LUA_BIN_DIR)/lua2json$(LUA_BIN_SUFFIX)
-	chmod $(EXECPERM) $(DESTDIR)/$(LUA_BIN_DIR)/lua2json$(LUA_BIN_SUFFIX)
-	cp lua/json2lua.lua $(DESTDIR)/$(LUA_BIN_DIR)/json2lua$(LUA_BIN_SUFFIX)
-	chmod $(EXECPERM) $(DESTDIR)/$(LUA_BIN_DIR)/json2lua$(LUA_BIN_SUFFIX)
-	cd tests; cp $(TEST_FILES) $(DESTDIR)/$(LUA_MODULE_DIR)/cjson/tests
-	cd tests; chmod $(DATAPERM) $(TEST_FILES); chmod $(EXECPERM) *.lua *.pl
 
 clean:
-	rm -f *.o $(TARGET)
+	rm -f *.o *.a $(TARGET)
+
+distclean:
+	rm -f *.o .*.d .*.d.* *.gcno *.gcda *.gcov *.a $(TARGET)

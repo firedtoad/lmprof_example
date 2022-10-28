@@ -4,7 +4,6 @@
 #       Windows: set LUA_DIR=c:\lua51
 
 project(lua-cjson C)
-cmake_minimum_required(VERSION 2.6)
 
 option(USE_INTERNAL_FPCONV "Use internal strtod() / g_fmt() code for performance")
 option(MULTIPLE_THREADS "Support multi-threaded apps with internal fpconv - recommended" ON)
@@ -14,9 +13,6 @@ if(NOT CMAKE_BUILD_TYPE)
         "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel."
         FORCE)
 endif()
-
-find_package(Lua51 REQUIRED)
-include_directories(${LUA_INCLUDE_DIR})
 
 if(NOT USE_INTERNAL_FPCONV)
     # Use libc number conversion routines (strtod(), sprintf())
@@ -43,41 +39,10 @@ else()
     endif()
 endif()
 
-# Handle platforms missing isinf() macro (Eg, some Solaris systems).
-include(CheckSymbolExists)
-CHECK_SYMBOL_EXISTS(isinf math.h HAVE_ISINF)
-if(NOT HAVE_ISINF)
-    add_definitions(-DUSE_INTERNAL_ISINF)
-endif()
+# add_library(cjson MODULE lua_cjson.c strbuf.c ${FPCONV_SOURCES})
+add_library(cjson STATIC lua_cjson.c strbuf.c ${FPCONV_SOURCES})
 
-set(_MODULE_LINK "${CMAKE_THREAD_LIBS_INIT}")
-get_filename_component(_lua_lib_dir ${LUA_LIBRARY} PATH)
 
-if(APPLE)
-    set(CMAKE_SHARED_MODULE_CREATE_C_FLAGS
-        "${CMAKE_SHARED_MODULE_CREATE_C_FLAGS} -undefined dynamic_lookup")
-endif()
 
-if(WIN32)
-    # Win32 modules need to be linked to the Lua library.
-    set(_MODULE_LINK ${LUA_LIBRARY} ${_MODULE_LINK})
-    set(_lua_module_dir "${_lua_lib_dir}")
-    # Windows sprintf()/strtod() handle NaN/inf differently. Not supported.
-    add_definitions(-DDISABLE_INVALID_NUMBERS)
-else()
-    set(_lua_module_dir "${_lua_lib_dir}/lua/5.1")
-endif()
-
-if(MSVC)
-    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
-    add_definitions(-Dinline=__inline)
-    add_definitions(-Dsnprintf=_snprintf)
-    add_definitions(-Dstrncasecmp=_strnicmp)
-endif()
-
-add_library(cjson MODULE lua_cjson.c strbuf.c ${FPCONV_SOURCES})
-set_target_properties(cjson PROPERTIES PREFIX "")
-target_link_libraries(cjson ${_MODULE_LINK})
-install(TARGETS cjson DESTINATION "${_lua_module_dir}")
 
 # vi:ai et sw=4 ts=4:

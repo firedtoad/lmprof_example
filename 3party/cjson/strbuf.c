@@ -58,7 +58,7 @@ void strbuf_init(strbuf_t *s, int len)
     s->reallocs = 0;
     s->debug = 0;
 
-    s->buf = (char *)malloc(size);
+    s->buf = malloc(size);
     if (!s->buf)
         die("Out of memory");
 
@@ -69,7 +69,7 @@ strbuf_t *strbuf_new(int len)
 {
     strbuf_t *s;
 
-    s = (strbuf_t*)malloc(sizeof(strbuf_t));
+    s = malloc(sizeof(strbuf_t));
     if (!s)
         die("Out of memory");
 
@@ -95,7 +95,7 @@ static inline void debug_stats(strbuf_t *s)
 {
     if (s->debug) {
         fprintf(stderr, "strbuf(%lx) reallocs: %d, length: %d, size: %d\n",
-                (size_t)s, s->reallocs, s->length, s->size);
+                (long)s, s->reallocs, s->length, s->size);
     }
 }
 
@@ -150,7 +150,7 @@ static int calculate_new_size(strbuf_t *s, int len)
         /* Exponential sizing */
         while (newsize < reqsize)
             newsize *= -s->increment;
-    } else {
+    } else if (s->increment != 0)  {
         /* Linear sizing */
         newsize = ((newsize + s->increment - 1) / s->increment) * s->increment;
     }
@@ -169,11 +169,11 @@ void strbuf_resize(strbuf_t *s, int len)
 
     if (s->debug > 1) {
         fprintf(stderr, "strbuf(%lx) resize: %d => %d\n",
-                (size_t)s, s->size, newsize);
+                (long)s, s->size, newsize);
     }
 
     s->size = newsize;
-    s->buf = (char *)realloc(s->buf, s->size);
+    s->buf = realloc(s->buf, s->size);
     if (!s->buf)
         die("Out of memory");
     s->reallocs++;
@@ -221,13 +221,12 @@ void strbuf_append_fmt(strbuf_t *s, int len, const char *fmt, ...)
 void strbuf_append_fmt_retry(strbuf_t *s, const char *fmt, ...)
 {
     va_list arg;
-    int fmt_len;
+    int fmt_len, try;
     int empty_len;
-    int t;
 
     /* If the first attempt to append fails, resize the buffer appropriately
      * and try again */
-    for (t = 0; ; t++) {
+    for (try = 0; ; try++) {
         va_start(arg, fmt);
         /* Append the new formatted string */
         /* fmt_len is the length of the string required, excluding the
@@ -239,7 +238,7 @@ void strbuf_append_fmt_retry(strbuf_t *s, const char *fmt, ...)
 
         if (fmt_len <= empty_len)
             break;  /* SUCCESS */
-        if (t > 0)
+        if (try > 0)
             die("BUG: length of formatted string changed");
 
         strbuf_resize(s, s->length + fmt_len);
