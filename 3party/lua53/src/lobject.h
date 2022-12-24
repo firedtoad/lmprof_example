@@ -109,12 +109,9 @@ typedef union Value {
 
 #define TValuefields	Value value_; int tt_
 
-
 typedef struct lua_TValue {
   TValuefields;
 } TValue;
-
-
 
 /* macro defining a nil value */
 #define NILCONSTANT	{NULL}, LUA_TNIL

@@ -8,6 +8,7 @@ LUALIB_API int luaopen_lmprof (lua_State *L);
 LUALIB_API int luaopen_lpeg (lua_State *L);
 LUALIB_API int luaopen_cjson (lua_State *L);
 LUALIB_API int luaopen_cjson_safe (lua_State *L);
+LUALIB_API int luaopen_luatrace_c_hook(lua_State *L);
 
 void LuaSlog(lua_State *L)
 {
@@ -32,6 +33,7 @@ LUALIB_API void init(lua_State *L)
     luaL_requiref(L,"lmprof",luaopen_lmprof,1);
     luaL_requiref(L,"lpeg",luaopen_lpeg,1);
     luaL_requiref(L,"cjson",luaopen_cjson_safe,1);
+    luaL_requiref(L,"c_hook",luaopen_luatrace_c_hook,1);
     lua_pushcfunction(L,LuaSlog);
     lua_setglobal(L,"LuaSlog");
 }

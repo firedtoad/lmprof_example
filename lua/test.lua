@@ -1,5 +1,9 @@
+-- local profiler= require("callgrind")
 local lmprof = require"lmprof"
-
+local Profiler = require("PepperfishProfiler")
+profiler = newProfiler()
+profiler:start()
+-- profiler.start("test")
 print("Hello, World!")
 
 -- SLOG_DEBUG(1,
@@ -140,3 +144,8 @@ ff()
 
 
 lmprof.stop("stage2.lua")
+
+profiler:stop()
+local outfile = io.open( "profile.txt", "w+" )
+profiler:report( outfile )
+outfile:close()

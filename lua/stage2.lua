@@ -1,42 +1,42 @@
 return {
-  ["12436578081243708688"] = {
-    func = "1243657808",
-    parent = "1243708688",
-    name = [[ TryCall (test.lua:84) ]],
+  ["33487914403342133152"] = {
+    func = "3348791440",
+    parent = "3342133152",
+    name = [[ ff (test.lua:142) ]],
     calls = 1,
-    mem_self = 40,
+    mem_self = 0,
     mem_cum = 40,
   },
-  ["12380986880"] = {
-    func = "1238098688",
+  ["33421331520"] = {
+    func = "3342133152",
     parent = "0",
     name = [[ main chunk (test.lua) ]],
     calls = 1,
     mem_self = 80,
     mem_cum = 352,
   },
-  ["12436577601238098688"] = {
-    func = "1243657760",
-    parent = "1238098688",
-    name = [[ new (test.lua:40) ]],
+  ["33483831363342133152"] = {
+    func = "3348383136",
+    parent = "3342133152",
+    name = [[ new (test.lua:46) ]],
     calls = 1,
     mem_self = 144,
     mem_cum = 232,
   },
-  ["12436575681243657760"] = {
-    func = "1243657568",
-    parent = "1243657760",
-    name = [[ Ctor (test.lua:73) ]],
+  ["33483852003348791440"] = {
+    func = "3348385200",
+    parent = "3348791440",
+    name = [[ TryCall (test.lua:90) ]],
+    calls = 1,
+    mem_self = 40,
+    mem_cum = 40,
+  },
+  ["33483852963348383136"] = {
+    func = "3348385296",
+    parent = "3348383136",
+    name = [[ Ctor (test.lua:79) ]],
     calls = 1,
     mem_self = 88,
     mem_cum = 88,
-  },
-  ["12437086881238098688"] = {
-    func = "1243708688",
-    parent = "1238098688",
-    name = [[ ff (test.lua:136) ]],
-    calls = 1,
-    mem_self = 0,
-    mem_cum = 40,
   },
 }
