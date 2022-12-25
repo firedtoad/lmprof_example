@@ -1,7 +1,7 @@
 -- local profiler= require("callgrind")
 local lmprof = require"lmprof"
 local Profiler = require("PepperfishProfiler")
-profiler = newProfiler()
+profiler = newProfiler("call")
 profiler:start()
 -- profiler.start("test")
 print("Hello, World!")
