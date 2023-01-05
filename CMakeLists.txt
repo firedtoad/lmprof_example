@@ -18,6 +18,8 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     #    set(CMAKE_CXX_FLAGS_RELEASE  "-O2 -DNDEBUG")
 endif ()
 
+link_libraries(m)
+
 aux_source_directory("src" LMP_SRC)
 aux_source_directory("3party/cjson" CJSON_SRC)
 aux_source_directory("3party/lpeg/" LPEG_SRC )
