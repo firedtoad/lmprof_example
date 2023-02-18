@@ -1,0 +1,24 @@
+Diagnostics:
+  ClangTidy:
+    Add: [performance*, modernize*, readability*]   
+    Remove: [
+      readability-identifier-naming,               
+      readability-implicit-bool-conversion,         
+      modernize-use-trailing-return-type,           
+      readability-identifier-length
+    ]
+  UnusedIncludes: Strict                           
+
+Completion:
+  AllScopes: Yes                                    
+
+InlayHints:                                         
+  Enabled: Yes
+  ParameterNames: Yes
+  DeducedTypes: Yes
+
+Hover:
+  ShowAKA: Yes                                      
+
+CompileFlags:                     # Tweak the parse settings
+  Add: [-xc++, -Wall,-Wextra ]    # treat all files as C++, enable more warnings
